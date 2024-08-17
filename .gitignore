@@ -1,0 +1,73 @@
+# Node.js dependencies
+node_modules/
+
+# TypeScript compiled files
+dist/
+out/
+build/
+
+# TypeScript declaration files
+*.d.ts
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# MacOS system files
+.DS_Store
+
+# IDE or editor specific files
+.vscode/
+.idea/
+
+# Optional npm cache directory
+.npm
+
+# Yarn Integrity file
+.yarn-integrity
+
+# PM2 Logs
+pids/
+pm2.pid
+pm2.log
+
+# Optional eslint cache
+.eslintcache
+
+# Parcel-bundler cache (or other tools that cache)
+.cache
+
+# Dependency directories
+jspm_packages/
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Optional lock files
+package-lock.json
+
+
+# Production environment variable file
+.env.production
+
+# Debug files
+*.log
+*.pid
+
+# Output of 'npm pack'
+*.tgz
+
+# Lerna
+lerna-debug.log
+lerna.json
