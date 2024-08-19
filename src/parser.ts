@@ -52,12 +52,12 @@ function parseObject(tokens: Token[], options: ParserOptions): any {
         // Parse value
         obj[key] = parseTokens(tokens, options);
 
-        // Handle trailing comma
+        // Handles trailing comma
         token = tokens[0];
         if (token?.type === ',') {
-            tokens.shift(); // Consume the comma
+            tokens.shift(); // Consumes the comma
             token = tokens[0];
-            if (token?.type === '}') tokens.shift(); // Handle trailing comma
+            if (token?.type === '}') tokens.shift(); // Handles trailing comma
         }
     }
 
@@ -86,12 +86,12 @@ function parseArray(tokens: Token[], options: ParserOptions): any[] {
 
         arr.push(parseTokens(tokens, options));
 
-        // Handle trailing comma
+        // Handles trailing comma
         token = tokens[0];
         if (token?.type === ',') {
-            tokens.shift(); // Consume the comma
+            tokens.shift(); // Consumes the comma
             token = tokens[0];
-            if (token?.type === ']') tokens.shift(); // Handle trailing comma
+            if (token?.type === ']') tokens.shift(); // Handles trailing comma
         }
     }
 
