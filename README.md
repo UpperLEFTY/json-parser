@@ -4,12 +4,12 @@ This project is a custom JSON parser built in TypeScript that supports backward 
 
 ## Features
 
-•	Standard JSON Parsing: Supports parsing of standard JSON structures.
-•	Backward Compatibility:
-•	Comments: Allows // and /* */ style comments within JSON.
-•	Trailing Commas: Supports trailing commas in objects and arrays.
-•	Single-Quoted Strings: Handles strings enclosed in single quotes.
-•	Unquoted Property Names: Accepts unquoted property names in objects.
+- Standard JSON Parsing: Supports parsing of standard JSON structures.
+- Backward Compatibility:
+- Comments: Allows // and /* */ style comments within JSON.
+- Trailing Commas: Supports trailing commas in objects and arrays.
+- Single-Quoted Strings: Handles strings enclosed in single quotes.
+- Unquoted Property Names: Accepts unquoted property names in objects.
 
 ## Usage
 
@@ -70,10 +70,10 @@ To use this parser in your project, follow these steps:
 
 - The parser can be customized using the following options:
 
-•	allowComments: (boolean) Enable to allow // and /* */ style comments in JSON.
-•	allowTrailingCommas: (boolean) Enable to allow trailing commas in objects and arrays.
-•	allowSingleQuotedStrings: (boolean) Enable to allow strings enclosed in single quotes.
-•	allowUnquotedPropertyNames: (boolean) Enable to allow unquoted property names in objects.
+- allowComments: (boolean) Enable to allow // and /* */ style comments in JSON.
+-	allowTrailingCommas: (boolean) Enable to allow trailing commas in objects and arrays.
+-	allowSingleQuotedStrings: (boolean) Enable to allow strings enclosed in single quotes.
+-	allowUnquotedPropertyNames: (boolean) Enable to allow unquoted property names in objects.
 
 - Example usage with options:
   const options = {
@@ -85,7 +85,7 @@ To use this parser in your project, follow these steps:
 
 const parsedData = parseJSON(yourJsonString, options);
 
-- Project Structure
+## Project Structure
 json-parser/
 |-- src/
 |   |-- tokenizer.ts         # Tokenizer logic for breaking JSON into tokens
@@ -104,7 +104,7 @@ json-parser/
 ## Running Tests
 To run the tests and ensure everything is working as expected, use:
 
-npm test
+`npm test`
 
 This command will run the unit tests for the tokenizer and parser. You should see output indicating that all tests have passed.
 
