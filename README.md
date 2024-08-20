@@ -123,6 +123,6 @@ License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-Contact
+## Contact
 
 For questions or suggestions, feel free to reach out via email at upperlefty@zoho.eu
