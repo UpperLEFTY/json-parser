@@ -85,21 +85,19 @@ To use this parser in your project, follow these steps:
 const parsedData = parseJSON(yourJsonString, options);
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 json-parser/
-│
 ├── src/
-│   ├── tokenizer.ts          # Tokenizer logic for breaking JSON into tokens
-│   ├── parser.ts             # Main parsing logic
-│   └── index.ts              # Entry point of the parser
-│
+│   ├── tokenizer.ts         # Tokenizer logic for breaking JSON into tokens
+│   ├── parser.ts            # Main parsing logic
+│   └── index.ts             # Entry point of the parser
 ├── tests/
-│   ├── tokenizer.test.ts     # Unit tests for the tokenizer
-│   ├── parser.test.ts        # Unit tests for the parser
-│   └── legacy-json/          # Sample legacy JSON files for testing
-│
-├── package.json              # NPM project metadata and scripts
-├── tsconfig.json             # TypeScript configuration
-└── README.md                 # Project documentation
+│   ├── tokenizer.test.ts    # Unit tests for the tokenizer
+│   ├── parser.test.ts       # Unit tests for the parser
+│   └── legacy-json/         # Sample legacy JSON files for testing
+├── package.json             # NPM project metadata and scripts
+├── tsconfig.json            # TypeScript configuration
+└── README.md                # Project documentation
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
