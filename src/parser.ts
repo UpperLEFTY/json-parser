@@ -7,15 +7,9 @@ interface ParserOptions {
     allowUnquotedPropertyNames?: boolean;
 }
 
-
 export function parseJSON(json: string, options: ParserOptions = {}): any {
-    // Avoid logging the entire JSON string
-    if (process.env.NODE_ENV === 'development') {
-        console.log('Parsing JSON input');
-    }
-    
-  const tokens = tokenize(json, options);
-  return parseTokens(tokens, options);
+    const tokens = tokenize(json, options);
+    return parseTokens(tokens, options);
 }
 
 // Main function to parse tokens into JSON structure
@@ -41,7 +35,14 @@ function parseObject(tokens: Token[], options: ParserOptions): any {
         if (token?.type === '}') break;
 
         // Handle property key
-        let key = parsePropertyKey(token, options);
+        let key = '';
+        if (token?.type === 'string' || token?.type === 'quotedString') {
+            key = token.value.slice(1, -1); // Remove quotes
+        } else if (options.allowUnquotedPropertyNames && token?.type === 'identifier') {
+            key = token.value;
+        } else {
+            throw new Error(`Unexpected token ${token?.value}, expected a property key`);
+        }
 
         // Expect colon
         token = tokens.shift();
@@ -52,26 +53,16 @@ function parseObject(tokens: Token[], options: ParserOptions): any {
         // Parse value
         obj[key] = parseTokens(tokens, options);
 
-        // Handles trailing comma
+        // Handle trailing comma
         token = tokens[0];
         if (token?.type === ',') {
-            tokens.shift(); // Consumes the comma
+            tokens.shift(); // Consume the comma
             token = tokens[0];
-            if (token?.type === '}') tokens.shift(); // Handles trailing comma
+            if (token?.type === '}') tokens.shift(); // Handle trailing comma
         }
     }
 
     return obj;
-}
-
-function parsePropertyKey(token: Token | undefined, options: ParserOptions): string {
-    if (token?.type === 'string' || token?.type === 'quotedString') {
-        return token.value.slice(1, -1); // Remove quotes
-    } else if (options.allowUnquotedPropertyNames && token?.type === 'identifier') {
-        return token.value;
-    } else {
-        throw new Error(`Unexpected token ${token?.value}, expected a property key`);
-    }
 }
 
 function parseArray(tokens: Token[], options: ParserOptions): any[] {
@@ -86,12 +77,12 @@ function parseArray(tokens: Token[], options: ParserOptions): any[] {
 
         arr.push(parseTokens(tokens, options));
 
-        // Handles trailing comma
+        // Handle trailing comma
         token = tokens[0];
         if (token?.type === ',') {
-            tokens.shift(); // Consumes the comma
+            tokens.shift(); // Consume the comma
             token = tokens[0];
-            if (token?.type === ']') tokens.shift(); // Handles trailing comma
+            if (token?.type === ']') tokens.shift(); // Handle trailing comma
         }
     }
 
