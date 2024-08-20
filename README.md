@@ -88,16 +88,16 @@ const parsedData = parseJSON(yourJsonString, options);
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 json-parser/
- src/
-│   ├── tokenizer.ts         # Tokenizer logic for breaking JSON into tokens
-│   ├── parser.ts            # Main parsing logic
-│   └── index.ts             # Entry point of the parser
-├── tests/
-│   ├── tokenizer.test.ts    # Unit tests for the tokenizer
-│   ├── parser.test.ts       # Unit tests for the parser
-│   └── legacy-json/         # Sample legacy JSON files for testing
-├── package.json             # NPM project metadata and scripts
-├── tsconfig.json            # TypeScript configuration
+|--src/
+    |──tokenizer.ts         # Tokenizer logic for breaking JSON into tokens
+    |--parser.ts            # Main parsing logic
+    │--index.ts             # Entry point of the parser
+├---tests/
+│   |-- tokenizer.test.ts    # Unit tests for the tokenizer
+│   |--- parser.test.ts       # Unit tests for the parser
+│   |--- legacy-json/         # Sample legacy JSON files for testing
+├── package.json             # npm project metadata and scripts
+├── tsconfig.json            # TypeScript config
 └── README.md                # Project documentation
 
 
