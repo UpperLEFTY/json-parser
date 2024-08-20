@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest"
+  },
+  "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": "**/tests/**/*.test.ts"
+    "testMatch": ["**/__tests__/**/*.test.ts"]
   },
   "keywords": [],
   "author": "",

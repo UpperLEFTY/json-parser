@@ -16,7 +16,6 @@
  *
  * 
  */
-
 export interface Token {
     type: string;
     value: string;
@@ -29,70 +28,152 @@ interface TokenizerOptions {
     allowUnquotedPropertyNames?: boolean;
 }
 
-function parseString(json: string, index: number, options: TokenizerOptions): { token: Token, newIndex: number } {
-    let value = '';
-    index++; // Skip the initial quote
+interface ParserOptions extends TokenizerOptions {}
 
-    while (index < json.length) {
-        const char = json[index];
-        if (char === '"') {
-            index++; // Skip the closing quote
-            break;
-        }
-        value += char;
-        index++;
-    }
-
-    return { token: { type: 'string', value: `"${value}"` }, newIndex: index };
-}
-
-function parseWord(json: string, index: number, options: TokenizerOptions): { token: Token, newIndex: number } {
-    let value = '';
-
-    while (index < json.length) {
-        const char = json[index];
-        if (char === ' ' || char === '\t' || char === '\n' || char === '\r' || char === '{' || char === '}' || char === '[' || char === ']' || char === ':' || char === ',') {
-            break;
-        }
-        value += char;
-        index++;
-    }
-
-    let type: string;
-    if (value === 'true' || value === 'false') {
-        type = 'boolean';
-    } else if (value === 'null') {
-        type = 'null';
-    } else if (!isNaN(Number(value))) {
-        type = 'number';
-    } else {
-        type = 'identifier';
-    }
-
-    return { token: { type, value }, newIndex: index };
-}
-
-export function tokenize(json: string, options: TokenizerOptions = {}): Token[] {
+export const tokenize = (json: string, options: ParserOptions = {}): Token[] => {
     const tokens: Token[] = [];
-    let index = 0;
+    let currentIndex = 0;
 
-    while (index < json.length) {
-        const char = json[index];
-        if (char === '{' || char === '}' || char === '[' || char === ']' || char === ':' || char === ',') {
+    function skipWhitespace() {
+        while (currentIndex < json.length && /\s/.test(json[currentIndex])) {
+            currentIndex++;
+        }
+    }
+
+    const handleComment = (): boolean => {
+        if (options.allowComments) {
+            if (json[currentIndex] === '/' && json[currentIndex + 1] === '*') {
+                currentIndex += 2;
+                while (currentIndex < json.length && !(json[currentIndex] === '*' && json[currentIndex + 1] === '/')) {
+                    currentIndex++;
+                }
+                currentIndex += 2;
+                return true;
+            } else if (json[currentIndex] === '/' && json[currentIndex + 1] === '/') {
+                currentIndex += 2;
+                while (currentIndex < json.length && json[currentIndex] !== '\n') {
+                    currentIndex++;
+                }
+                currentIndex++;
+                return true;
+            }
+        }
+        return false;
+    };
+
+    const handleSingleQuotedString = (): boolean => {
+        if (options.allowSingleQuotedStrings && json[currentIndex] === "'") {
+            let endIndex = currentIndex + 1;
+            while (endIndex < json.length && json[endIndex] !== "'") {
+                endIndex++;
+            }
+            if (endIndex >= json.length) {
+                throw new Error('Unterminated single-quoted string');
+            }
+            tokens.push({ type: 'string', value: json.substring(currentIndex, endIndex + 1) });
+            currentIndex = endIndex + 1;
+            return true;
+        }
+        return false;
+    };
+
+    const handleUnquotedPropertyName = (): boolean => {
+        if (options.allowUnquotedPropertyNames && /[a-zA-Z_]/.test(json[currentIndex])) {
+            let endIndex = currentIndex;
+            while (endIndex < json.length && /[\w$]/.test(json[endIndex])) {
+                endIndex++;
+            }
+            tokens.push({ type: 'identifier', value: json.substring(currentIndex, endIndex) });
+            currentIndex = endIndex;
+            return true;
+        }
+        return false;
+    };
+
+    const handlePunctuation = (): boolean => {
+        const char = json[currentIndex];
+        if ('{}:,[]'.includes(char)) {
             tokens.push({ type: char, value: char });
-            index++;
-        } else if (char === ' ' || char === '\t' || char === '\n' || char === '\r') {
-            index++;
-        } else if (char === '"') {
-            const { token, newIndex } = parseString(json, index, options);
-            tokens.push(token);
-            index = newIndex;
-        } else {
-            const { token, newIndex } = parseWord(json, index, options);
-            tokens.push(token);
-            index = newIndex;
+            currentIndex++;
+            return true;
+        }
+        return false;
+    };
+
+    const handleNull = (): boolean => {
+        if (json[currentIndex] === 'n' && json.substring(currentIndex, currentIndex + 4) === 'null') {
+            tokens.push({ type: 'null', value: 'null' });
+            currentIndex += 4;
+            return true;
+        }
+        return false;
+    };
+
+    const handleBooleans = (): boolean => {
+        if (json[currentIndex] === 't' && json.substring(currentIndex, currentIndex + 4) === 'true') {
+            tokens.push({ type: 'boolean', value: 'true' });
+            currentIndex += 4;
+            return true;
+        }
+        if (json[currentIndex] === 'f' && json.substring(currentIndex, currentIndex + 5) === 'false') {
+            tokens.push({ type: 'boolean', value: 'false' });
+            currentIndex += 5;
+            return true;
+        }
+        return false;
+    };
+
+    const handleString = (): boolean => {
+        if (json[currentIndex] === '"') {
+            let endIndex = currentIndex + 1;
+            while (endIndex < json.length && json[endIndex] !== '"') {
+                if (json[endIndex] === '\\' && endIndex + 1 < json.length) {
+                    endIndex += 2;
+                } else {
+                    endIndex++;
+                }
+            }
+            if (endIndex >= json.length) {
+                throw new Error('Unterminated double-quoted string');
+            }
+            tokens.push({ type: 'string', value: json.substring(currentIndex, endIndex + 1) });
+            currentIndex = endIndex + 1;
+            return true;
+        }
+        return false;
+    };
+
+    const handleNumber = (): boolean => {
+        const char = json[currentIndex];
+        if (/\d/.test(char) || (char === '-' && /\d/.test(json[currentIndex + 1]))) {
+            let endIndex = currentIndex;
+            while (endIndex < json.length && /[\d.eE+-]/.test(json[endIndex])) {
+                endIndex++;
+            }
+            tokens.push({ type: 'number', value: json.substring(currentIndex, endIndex) });
+            currentIndex = endIndex;
+            return true;
+        }
+        return false;
+    };
+
+    while (currentIndex < json.length) {
+        skipWhitespace();
+        
+        const handled = 
+            handleComment() || 
+            handleSingleQuotedString() || 
+            handleUnquotedPropertyName() || 
+            handlePunctuation() || 
+            handleNull() || 
+            handleBooleans() || 
+            handleString() || 
+            handleNumber();
+        
+        if (!handled) {
+            throw new Error(`Unexpected token ${json[currentIndex]}`);
         }
     }
 
     return tokens;
-}
+};
