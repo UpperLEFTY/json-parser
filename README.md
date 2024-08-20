@@ -4,12 +4,12 @@ This project is a custom JSON parser built in TypeScript that supports backward 
 
 ## Features
 
-	•	Standard JSON Parsing: Supports parsing of standard JSON structures.
-	•	Backward Compatibility:
-	•	Comments: Allows // and /* */ style comments within JSON.
-	•	Trailing Commas: Supports trailing commas in objects and arrays.
-	•	Single-Quoted Strings: Handles strings enclosed in single quotes.
-	•	Unquoted Property Names: Accepts unquoted property names in objects.
+•	Standard JSON Parsing: Supports parsing of standard JSON structures.
+•	Backward Compatibility:
+•	Comments: Allows // and /* */ style comments within JSON.
+•	Trailing Commas: Supports trailing commas in objects and arrays.
+•	Single-Quoted Strings: Handles strings enclosed in single quotes.
+•	Unquoted Property Names: Accepts unquoted property names in objects.
 
 ## Usage
 
@@ -60,6 +60,7 @@ To use this parser in your project, follow these steps:
 1. Clone the repository:
 
 `git clone https://github.com/UpperLEFTY/json-parser.git`
+
 `cd json-parser`
 
 2. Install dependencies:
@@ -87,7 +88,7 @@ const parsedData = parseJSON(yourJsonString, options);
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 json-parser/
-├── src/
+ src/
 │   ├── tokenizer.ts         # Tokenizer logic for breaking JSON into tokens
 │   ├── parser.ts            # Main parsing logic
 │   └── index.ts             # Entry point of the parser
@@ -125,4 +126,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 Contact
 
-For questions or suggestions, feel free to reach out via email at [](mailto:
+For questions or suggestions, feel free to reach out via email at upperlefty@zoho.eu
