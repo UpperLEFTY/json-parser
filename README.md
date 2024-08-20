@@ -85,7 +85,7 @@ To use this parser in your project, follow these steps:
 
 const parsedData = parseJSON(yourJsonString, options);
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- Project Structure
 json-parser/
 |-- src/
 |   |-- tokenizer.ts         # Tokenizer logic for breaking JSON into tokens
@@ -99,8 +99,7 @@ json-parser/
 |-- tsconfig.json            # TypeScript config
 |-- README.md                # Project documentation
 
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- The src/ directory contains the main parser logic, including the tokenizer and parser modules. The tests/ directory contains unit tests for the tokenizer and parser. The legacy-json/ directory contains sample JSON files with legacy features for testing.
 
 ## Running Tests
 To run the tests and ensure everything is working as expected, use:
